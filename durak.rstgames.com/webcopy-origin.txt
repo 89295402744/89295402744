@@ -1,0 +1,20 @@
+Uri: https://durak.rstgames.com/play/
+File Name: D:\Downloaded Web Sites\durak.rstgames.com\play\index.htm
+Content Type: text/html
+
+Uri: https://durak.rstgames.com/play/Build/61870610fe251ace1872b4cedc03b54e.jpg
+File Name: D:\Downloaded Web Sites\durak.rstgames.com\play\Build\61870610fe251ace1872b4cedc03b54e.jpg
+Content Type: image/jpeg
+
+Uri: https://durak.rstgames.com/play/Build/d50cc3ee055c5f5e237cc0492cefedce.js
+File Name: D:\Downloaded Web Sites\durak.rstgames.com\play\Build\d50cc3ee055c5f5e237cc0492cefedce.js
+Content Type: application/javascript
+
+Uri: https://mc.yandex.ru/watch/89552765
+File Name: D:\Downloaded Web Sites\durak.rstgames.com\watch\89552765
+Content Type: image/gif
+
+Uri: https://static.rstgames.com/durak/public/image/favicon.ico
+File Name: D:\Downloaded Web Sites\durak.rstgames.com\durak\public\image\favicon.ico
+Content Type: image/x-icon
+

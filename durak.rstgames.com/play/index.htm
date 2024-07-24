@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Дурак Онлайн | Durak Online</title>
+    <meta name="description" content="Браузерная версия популярной карточной игры Дурак Онлайн.">
+    <meta name="keywords" content="дурак, дурак онлайн, durak, durak online">    
+    <!-- <title>Durak</title> -->
+    <link rel="shortcut icon" href="../durak/public/image/favicon.ico" type="image/x-icon">
+    <style>
+      body { padding: 0; margin: 0 }
+      #center { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) }
+
+      #custom-loader {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+      }
+
+      #custom-loader {
+          margin-top: 288px;
+          width: 65%;
+          height: 24px;
+          background: gray;
+          border: 1px solid lightgray;
+      }
+
+      #custom-loader .fill {
+          width: 0%;
+          height: 100%;
+          background: rgb(73, 73, 73);
+      }
+
+      #custom-loader .label {
+          position: relative;
+          top: -21px;
+          font-size: 15px;
+          text-align: center;
+          font-family: 'Trebuchet MS', sans-serif, calibri;
+          text-shadow: 1px 1px 2px gray;
+          color: white;
+      }
+
+      #text-screen {
+        display: block;
+        margin: 0; 
+        padding: 0;
+        font-family: 'Trebuchet MS', sans-serif, calibri;
+      } 
+
+      .title {
+        margin: 0;
+      }
+
+      .info {
+        margin: 0;
+        font-size: 12px;
+      }
+
+      #fail-screen {
+        display: none;
+        position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);   
+          font-family: 'Trebuchet MS', sans-serif, calibri;     
+      }      
+
+      #loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255,255,255,.3);
+        border-radius: 50%;
+        border-top-color: rgb(73, 73, 73);
+        animation: spin 1s ease-in-out infinite;
+        -webkit-animation: spin 1s ease-in-out infinite;
+      }
+
+        @keyframes spin {
+          to { -webkit-transform: rotate(360deg); }
+        }
+        @-webkit-keyframes spin {
+          to { -webkit-transform: rotate(360deg); }
+        }
+
+      </style>          
+  </head>
+  <body style="text-align: center">   
+    <div id="center">
+      <div id="text-screen">
+        <h3 class="title">Дурак Онлайн</h3>
+        <p class="info">Веб версия карточной игры Дурак Онлайн. Авторизация теми же аккаунтами что и в мобильном приложении. <br>Купить монеты в Дурак Онлайн можно после авторизации. <a href="https://durak.rstgames.com/ru/" target="_blank">Скачать</a> Дурак Онлайн на смартфон.</p>
+      </div>       
+      <div id="unity-container"> 
+        <canvas id="unity-canvas" width="960" height="720" style="width: 960px; height: 720px; background: url('Build/61870610fe251ace1872b4cedc03b54e.jpg') center / cover"></canvas>
+        <div id="unity-custom-loading-screen">
+          <div id="custom-logo"></div>
+          <div id="custom-loader">
+            <div class="fill"></div>
+            <div class="label"></div>
+            <div id="loading"></div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    <div id="fail-screen">
+      <p>Вашe устройство не поддерживает WebGL2!</p>
+      <p>Воспользуйтесь браузером Chrome <br>или откройте страницу в десктопном браузере.</p>
+      <p><a href="https://durak.rstgames.com/ru/" target="_blank">Скачать</a> Дурак Онлайн на смартфон.</p>
+    </div>         
+    <script src="Build/d50cc3ee055c5f5e237cc0492cefedce.js"></script>
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      var textScreen = document.querySelector("#text-screen");
+      var loadingScreen = document.querySelector("#unity-custom-loading-screen");
+      var customLoadingBar = document.querySelector("#custom-loader"); 
+      var failScreen = document.querySelector("#fail-screen"); 
+      var gl = document.createElement('canvas').getContext('webgl2');
+      if (!gl) {
+        textScreen.style.display = "none";
+        loadingScreen.style.display = "none";
+        customLoadingBar.style.display = "none";
+        customLoadingBar.style.display = "none";
+        canvas.style.display = "none";
+        failScreen.style.display = "block";
+      } else {
+        var config = {
+        dataUrl: "Build/c61fe894cfd892e4e62fa01549a0b74f.data",
+        frameworkUrl: "Build/065289ea65757fb68f20b5af53aca5e0.js",
+        codeUrl: "Build/292521938913e758ca9dc7c41354e27d.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "R-Soft",
+        productName: "Durak",
+        productVersion: "1.9.8"
+      };          
+
+      loadingScreen.style.display = "block";
+
+      createUnityInstance(canvas, config, (progress) => {
+        unitySetLoaderProgressTo(progress);
+      }).then((unityInstance) => {
+        loadingScreen.style.display = "none";
+        window.unityInstance = unityInstance;
+      }).catch((message) => {
+        alert(message);
+      });
+
+      function unitySetLoaderProgressTo(value) {
+        const fill = customLoadingBar.getElementsByClassName("fill")[0];
+        const fillText = customLoadingBar.getElementsByClassName("label")[0];
+        fill.animate(
+          [
+            { width: (value * 100) + "%" }
+          ],
+          {
+            duration: 300,
+            fill: "forwards"
+          }
+        );
+        fillText.textContent = (value * 100).toFixed() + "%";
+      }      
+      }
+    </script>
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+    ym(89552765, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true
+    });
+  </script>
+  <noscript><div><img src="../watch/89552765" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+  <!-- /Yandex.Metrika counter -->   
+  </body>
+</html>
